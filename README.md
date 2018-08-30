@@ -31,3 +31,33 @@ sensor:
 | urlbase | / | no | The base URL Sonarr is running under.
 | days | 7 | no | How many days to look ahead for the upcoming sensor, 1 means today only.
 | ssl | False | no | Whether or not to use SSL for Sonarr. Set to `True` if you use SSL.
+
+## Developers
+
+**If you'd like to make your own component to feed the upcoming media card:**
+
+1. Make a sensor that follows this naming convention "sensor.sonarr_upcoming_media", replacing sonarr with your service.
+2. The state of the sensor must be the amount of items (episodes, movies, etc.) to be listed.
+3. The card looks for numbered attributes with values formatted like this example:
+
+```banner1: https://www.thetvdb.com/banners/graphical/5b43a197b530e.jpg
+poster1: https://www.thetvdb.com/banners/_cache/posters/290853-15.jpg
+series1: Fear the Walking Dead
+episode1: Weak
+airdate1: 2018-09-02
+airtime1: 21:00
+hasFile1: false
+banner2: https://www.thetvdb.com/banners/graphical/239851-g.jpg
+poster2: https://www.thetvdb.com/banners/_cache/posters/239851-2.jpg
+series2: Penn & Teller: Fool Us
+episode2: The Fool Us Zone
+airdate2: 2018-09-03
+airtime2: 20:00
+hasFile2: false
+```
+
+Then all the user needs to do is put your service name in the config like so "service: sonarr".</br>
+Please inform me if you create one and I'll add it to the list.</br>
+If you need special styling or edits to the card to accomidate your service, just ask or submit a PR.</br></br>
+
+Thanks!
