@@ -19,13 +19,12 @@ from homeassistant.const import (
     CONF_API_KEY, CONF_HOST, CONF_PORT, CONF_MONITORED_CONDITIONS, CONF_SSL)
 from homeassistant.helpers.entity import Entity
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 _LOGGER = logging.getLogger(__name__)
 
 CONF_DAYS = 'days'
 CONF_INCLUDED = 'include_paths'
-CONF_UNIT = 'unit'
 CONF_URLBASE = 'urlbase'
 
 DEFAULT_HOST = 'localhost'
@@ -106,8 +105,8 @@ class Sonarr_UpcomingSensor(Entity):
             attribNum += 1
             attributes['banner' + str(attribNum)] = show['series']['images'][1]['url']
             attributes['poster' + str(attribNum)] = re.sub('banners/', 'banners/_cache/', show['series']['images'][2]['url'])
-            attributes['series' + str(attribNum)] = show['series']['title']
-            attributes['episode' + str(attribNum)] = show['title']
+            attributes['title' + str(attribNum)] = show['series']['title']
+            attributes['subtitle' + str(attribNum)] = show['title']
             attributes['airdate' + str(attribNum)] = show['airDate']
             attributes['airtime' + str(attribNum)] = show['series']['airTime']
             attributes['hasFile' + str(attribNum)] = show['hasFile']
