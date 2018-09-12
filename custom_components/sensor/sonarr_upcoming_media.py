@@ -19,7 +19,7 @@ from homeassistant.const import (
     CONF_API_KEY, CONF_HOST, CONF_PORT, CONF_MONITORED_CONDITIONS, CONF_SSL)
 from homeassistant.helpers.entity import Entity
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -106,6 +106,13 @@ class Sonarr_UpcomingSensor(Entity):
                 attributes['poster' + str(attribNum)] = re.sub('banners/', 'banners/_cache/', show['series']['images'][2]['url'])
             except:
                 attributes['poster' + str(attribNum)] = 'https://i.imgur.com/GmAQyT5.jpg'
+            try:
+                if '.jpg' not in show['series']['images'][0]['url']:
+                    attributes['fanart' + str(attribNum)] = re.sub('banners/', 'banners/_cache/', show['series']['images'][2]['url'])
+                else:
+                    attributes['fanart' + str(attribNum)] = re.sub('banners/', 'banners/_cache/', show['series']['images'][0]['url'])
+            except:
+                attributes['fanart' + str(attribNum)] = ''
             try:
                 studio = show['series']['network']
                 stustr = True
