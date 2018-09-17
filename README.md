@@ -8,9 +8,7 @@ This component works with or without the default sonarr component.</br></br>
 ## Installation:
 
 1. Install this component by copying to your `/custom_components/sensor/` folder.
-2. Add this to your `configuration.yaml` using the config options below example. 
-3. **You will need to restart for the component to start working.**
-
+2. Add this to your `configuration.yaml` using the config options below example.
 ```
 sensor:
 - platform: sonarr_upcoming_media
@@ -20,7 +18,7 @@ sensor:
   days: 2
   ssl: true
 ```
-
+3. **You will need to restart for the component to start working.**
 ### Options
 
 | key | default | required | description
