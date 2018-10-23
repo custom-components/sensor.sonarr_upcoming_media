@@ -20,7 +20,7 @@ from homeassistant.const import (
     CONF_API_KEY, CONF_HOST, CONF_PORT, CONF_MONITORED_CONDITIONS, CONF_SSL)
 from homeassistant.helpers.entity import Entity
 
-__version__ = '0.0.9'
+__version__ = '0.1.0'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -124,7 +124,11 @@ class Sonarr_UpcomingSensor(Entity):
             pre['number'] = 'S{:02d}E{:02d}'.format(show['seasonNumber'], show['episodeNumber'])
             pre['runtime'] = show['series']['runtime']
             pre['studio'] = show['series']['network']
-            pre['rating'] = '\N{BLACK STAR} ' + str(show['series']['ratings']['value'])
+            try:
+                if show['series']['ratings']['value'] > 0:
+                    pre['rating'] = "\N{BLACK STAR}"+' '+str(show['series']['ratings']['value'])
+                else: pre['rating'] = ''
+            except: pre['rating'] = ''
             if daysBetween <= 7: pre['release'] = '$day, $time'
             else: pre['release'] = '$day, $date $time'
             try: pre['poster'] = re.sub('banners/', 'banners/_cache/', show['series']['images'][2]['url'])
