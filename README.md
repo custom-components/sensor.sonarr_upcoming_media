@@ -29,3 +29,15 @@ sensor:
 | urlbase | / | no | The base URL Sonarr is running under.
 | days | 7 | no | How many days to look ahead for the upcoming sensor, 1 means today only.
 | ssl | False | no | Whether or not to use SSL for Sonarr. Set to `True` if you use SSL.
+
+
+### Card Content Defaults
+
+| key | default | example |
+| --- | --- | --- |
+| title | $title | "The Walking Dead" |
+| line1 | $episode | "What Comes After" |
+| line2 | $release | "Mon, 10/31 9:00pm" if it's more than a week away or "Monday, 9:00pm" if it's within a week.|
+| line3 | $rating - $runtime | "★ 7.8 - 45 min" |
+| line4 | $number - $studio | "S06E09 - AMC"
+| icon | mdi:arrow-down-bold-circle | https://materialdesignicons.com/icon/arrow-down-bold-circle
