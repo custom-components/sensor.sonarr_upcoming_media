@@ -40,4 +40,4 @@ sensor:
 | line2 | $release | "Mon, 10/31 9:00pm" if it's more than a week away or "Monday, 9:00pm" if it's within a week.|
 | line3 | $rating - $runtime | "★ 7.8 - 45 min" |
 | line4 | $number - $studio | "S06E09 - AMC"
-| icon | mdi:arrow-down-bold-circle | https://materialdesignicons.com/icon/arrow-down-bold-circle
+| icon | mdi:arrow-down-bold | https://materialdesignicons.com/icon/arrow-down-bold
