@@ -35,8 +35,10 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_MAX, default=5): cv.string,
 })
 
+
 def setup_platform(hass, config, add_devices, discovery_info=None):
     add_devices([SonarrUpcomingMediaSensor(hass, config)], True)
+
 
 class SonarrUpcomingMediaSensor(Entity):
 
@@ -45,7 +47,8 @@ class SonarrUpcomingMediaSensor(Entity):
         self.host = conf.get(CONF_HOST)
         self.port = conf.get(CONF_PORT)
         self.urlbase = conf.get(CONF_URLBASE)
-        if self.urlbase: self.urlbase = "{}/".format(self.urlbase.strip('/'))
+        if self.urlbase:
+            self.urlbase = "{}/".format(self.urlbase.strip('/'))
         self.apikey = conf.get(CONF_API_KEY)
         self.days = int(conf.get(CONF_DAYS))
         self.ssl = 's' if conf.get(CONF_SSL) else ''
@@ -93,11 +96,12 @@ class SonarrUpcomingMediaSensor(Entity):
                 pre['title'] = show['series']['title']
             else:
                 continue
-            pre['episode'] = show.get('title','')
+            pre['episode'] = show.get('title', '')
             if 'seasonNumber' and 'episodeNumber' in show:
                 pre['number'] = 'S{:02d}E{:02d}'.format(show['seasonNumber'],
                                                         show['episodeNumber'])
-            else: pre['number'] = ''
+            else:
+                pre['number'] = ''
             if 'runtime' in show['series']:
                 pre['runtime'] = show['series']['runtime']
             else:
@@ -106,8 +110,8 @@ class SonarrUpcomingMediaSensor(Entity):
                 pre['studio'] = show['series']['network']
             else:
                 pre['studio'] = 0
-            if ('ratings' in show ['series'] and 
-                show['series']['ratings']['value'] > 0):
+            if ('ratings' in show['series'] and
+                    show['series']['ratings']['value'] > 0):
                     pre['rating'] = ('\N{BLACK STAR} ' +
                                      str(show['series']['ratings']['value']))
             else:
@@ -116,14 +120,15 @@ class SonarrUpcomingMediaSensor(Entity):
                 pre['genres'] = ', '.join(show['series']['genres'])
             else:
                 pre['genres'] = ''
-            try: pre['poster'] = re.sub('banners/', 'banners/_cache/',
-                                        show['series']['images'][2]['url'])
+            try:
+                pre['poster'] = re.sub('banners/', 'banners/_cache/',
+                                       show['series']['images'][2]['url'])
             except:
                 continue
             try:
                 if '.jpg' in show['series']['images'][0]['url']:
                     pre['fanart'] = re.sub('banners/', 'banners/_cache/',
-                                            show['series']['images'][0]['url'])
+                                           show['series']['images'][0]['url'])
                 else:
                     pre['fanart'] = ''
             except:
@@ -143,7 +148,7 @@ class SonarrUpcomingMediaSensor(Entity):
                                '&end={5}'.format(self.ssl, self.host,
                                                  self.port, self.urlbase,
                                                  start, end),
-                headers={'X-Api-Key': self.apikey}, timeout=10)
+                               headers={'X-Api-Key': self.apikey}, timeout=10)
         except OSError:
             _LOGGER.warning("Host %s is not available", self.host)
             self._state = 'Offline'
@@ -154,9 +159,11 @@ class SonarrUpcomingMediaSensor(Entity):
             if self.days == 1:
                 self.data = list(filter(lambda x: x['airDate'][:-10] == str(
                     start), api.json()))[:self.max_items]
-            else: self.data = api.json()[:self.max_items]
+            else:
+                self.data = api.json()[:self.max_items]
         else:
             self._state = 'Offline'
+
 
 def get_date(zone, offset=0):
     """Get date based on timezone and offset of days."""
