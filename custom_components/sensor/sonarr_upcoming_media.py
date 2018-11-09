@@ -55,8 +55,6 @@ class SonarrUpcomingMediaSensor(Entity):
         self._state = None
         self.data = []
         self._tz = timezone(str(hass.config.time_zone))
-        self.item_count = 0
-        self.now = str(get_date(self._tz))
         self.max_items = int(conf.get(CONF_MAX))
 
     @property
@@ -71,72 +69,69 @@ class SonarrUpcomingMediaSensor(Entity):
     def device_state_attributes(self):
         import re
         """Return JSON for the sensor."""
-        self.item_count = 0
         attributes = {}
         default = {}
-        data = []
+        card_json = []
         default['title_default'] = '$title'
         default['line1_default'] = '$episode'
         default['line2_default'] = '$release'
         default['line3_default'] = '$rating - $runtime'
         default['line4_default'] = '$number - $studio'
         default['icon'] = 'mdi:arrow-down-bold'
-        data.append(default)
+        card_json.append(default)
         for show in self.data:
-            pre = {}
+            card_item = {}
             if 'series' not in show:
                 continue
-            pre['airdate'] = show['airDateUtc']
+            card_item['airdate'] = show['airDateUtc']
             if days_until(show['airDateUtc'], self._tz) <= 7:
-                pre['release'] = '$day, $time'
+                card_item['release'] = '$day, $time'
             else:
-                pre['release'] = '$day, $date $time'
-            pre['flag'] = show.get('hasFile', False)
+                card_item['release'] = '$day, $date $time'
+            card_item['flag'] = show.get('hasFile', False)
             if 'title' in show['series']:
-                pre['title'] = show['series']['title']
+                card_item['title'] = show['series']['title']
             else:
                 continue
-            pre['episode'] = show.get('title', '')
+            card_item['episode'] = show.get('title', '')
             if 'seasonNumber' and 'episodeNumber' in show:
-                pre['number'] = 'S{:02d}E{:02d}'.format(show['seasonNumber'],
+                card_item['number'] = 'S{:02d}E{:02d}'.format(show['seasonNumber'],
                                                         show['episodeNumber'])
             else:
-                pre['number'] = ''
+                card_item['number'] = ''
             if 'runtime' in show['series']:
-                pre['runtime'] = show['series']['runtime']
+                card_item['runtime'] = show['series']['runtime']
             else:
-                pre['runtime'] = ''
+                card_item['runtime'] = ''
             if 'network' in show['series']:
-                pre['studio'] = show['series']['network']
+                card_item['studio'] = show['series']['network']
             else:
-                pre['studio'] = 0
+                card_item['studio'] = ''
             if ('ratings' in show['series'] and
-                    show['series']['ratings']['value'] > 0):
-                    pre['rating'] = ('\N{BLACK STAR} ' +
+               show['series']['ratings']['value'] > 0):
+                    card_item['rating'] = ('\N{BLACK STAR} ' +
                                      str(show['series']['ratings']['value']))
             else:
-                pre['rating'] = ''
+                card_item['rating'] = ''
             if 'genres' in show['series']:
-                pre['genres'] = ', '.join(show['series']['genres'])
+                card_item['genres'] = ', '.join(show['series']['genres'])
             else:
-                pre['genres'] = ''
+                card_item['genres'] = ''
             try:
-                pre['poster'] = re.sub('banners/', 'banners/_cache/',
+                card_item['poster'] = re.sub('banners/', 'banners/_cache/',
                                        show['series']['images'][2]['url'])
             except:
                 continue
             try:
                 if '.jpg' in show['series']['images'][0]['url']:
-                    pre['fanart'] = re.sub('banners/', 'banners/_cache/',
+                    card_item['fanart'] = re.sub('banners/', 'banners/_cache/',
                                            show['series']['images'][0]['url'])
                 else:
-                    pre['fanart'] = ''
+                    card_item['fanart'] = ''
             except:
-                pre['fanart'] = ''
-            self.item_count += 1
-            data.append(pre)
-        self._state = self.item_count
-        attributes['data'] = json.dumps(data)
+                card_item['fanart'] = ''
+            card_json.append(card_item)
+        attributes['data'] = json.dumps(card_json)
         return attributes
 
     def update(self):
@@ -151,7 +146,7 @@ class SonarrUpcomingMediaSensor(Entity):
                                headers={'X-Api-Key': self.apikey}, timeout=10)
         except OSError:
             _LOGGER.warning("Host %s is not available", self.host)
-            self._state = 'Offline'
+            self._state = '%s cannot be reached' % self.host
             return
 
         if api.status_code == 200:
@@ -162,7 +157,7 @@ class SonarrUpcomingMediaSensor(Entity):
             else:
                 self.data = api.json()[:self.max_items]
         else:
-            self._state = 'Offline'
+            self._state = '%s cannot be reached' % self.host
 
 
 def get_date(zone, offset=0):
