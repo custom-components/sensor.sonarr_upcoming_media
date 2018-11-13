@@ -8,9 +8,10 @@ This component does not require, nor conflict with, the default Sonarr component
 ## Installation:
 
 1. Install this component by copying to your `/custom_components/sensor/` folder.
-2. Add the code to your `configuration.yaml` using the config options below example.
-3. **You will need to restart for the component to start working.**
-### Options
+2. Install the card: [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
+3. Add the code to your `configuration.yaml` using the config options below.
+4. Add the code for the card to your `ui-lovelace.yaml`. 
+5. **You will need to restart after installation for the component to start working.**
 
 | key | default | required | description
 | --- | --- | --- | ---
@@ -21,8 +22,10 @@ This component does not require, nor conflict with, the default Sonarr component
 | days | 60 | no | How many days to look ahead for the upcoming sensor.
 | ssl | false | no | Whether or not to use SSL for Sonarr.
 | max | 5 | no | Max number of items in sensor.
+</br>
 
-### Sample config:
+**Do not just copy examples, please use config options above to build your own!**
+### Sample for configuration.yaml:
 
 ```
 sensor:
@@ -35,6 +38,13 @@ sensor:
   max: 10
 ```
 
+### Sample for ui-lovelace.yaml:
+
+    - type: custom:upcoming-media-card
+      entity: sensor.sonarr_upcoming_media
+      title: Upcoming TV
+      
+      
 ### Card Content Defaults:
 
 | key | default | example |
