@@ -2,7 +2,7 @@
 name: Upcoming Media Card Issues
 about: DO NOT POST HERE, POST ON THE CARD'S PAGE.
 title: ''
-labels: ''
+labels: invalid
 assignees: ''
 
 ---
