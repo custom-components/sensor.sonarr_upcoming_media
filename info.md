@@ -1,1 +1,1 @@
-This component feeds [Upcoming Media Card](./upcoming-media-card) with Sonarr's upcoming shows.
+This component feeds [Upcoming Media Card](./146783593) with Sonarr's upcoming shows.
