@@ -39,13 +39,13 @@ Read through these two resources before posting issues to GitHub or the forums.
 
 ```
 sensor:
- - platform: sonarr_upcoming_media
-   api_key: YOUR_API_KEY
-   host: 127.0.0.1
-   port: 8989
-   days: 7
-   ssl: false
-   max: 10
+  - platform: sonarr_upcoming_media
+    api_key: YOUR_API_KEY
+    host: 127.0.0.1
+    port: 8989
+    days: 7
+    ssl: false
+    max: 10
 ```
 
 ### Sample for ui-lovelace.yaml:
