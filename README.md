@@ -44,7 +44,7 @@ sensor:
     host: 127.0.0.1
     port: 8989
     days: 7
-    ssl: false
+    ssl: true
     max: 10
 ```
 
