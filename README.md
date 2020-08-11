@@ -29,7 +29,7 @@ Read through these two resources before posting issues to GitHub or the forums.
 | host | localhost | no | The host Sonarr is running on.
 | port | 8989 | no | The port Sonarr is running on.
 | urlbase | / | no | The base URL Sonarr is running under.
-| days | 60 | no | How many days to look ahead for the upcoming sensor.
+| days | 7 | no | How many days to look ahead for the upcoming sensor.
 | ssl | false | no | Whether or not to use SSL for Sonarr.
 | max | 5 | no | Max number of items in sensor.
 </br>
