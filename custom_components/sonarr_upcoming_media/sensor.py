@@ -58,7 +58,7 @@ class SonarrUpcomingMediaSensor(Entity):
         self.data = []
         self._tz = timezone(str(hass.config.time_zone))
         self.max_items = int(conf.get(CONF_MAX))
-        self.filter ='unmonitored=True' if conf.get(CONF_FILTER) else ''
+        self.filter ='unmonitored=True&' if conf.get(CONF_FILTER) else ''
 
     @property
     def name(self):
@@ -141,7 +141,7 @@ class SonarrUpcomingMediaSensor(Entity):
         start = get_date(self._tz)
         end = get_date(self._tz, self.days)
         try:
-            api = requests.get('http{0}://{1}:{2}/{3}api/calendar?unmonitored={4}&start={5}'
+            api = requests.get('http{0}://{1}:{2}/{3}api/calendar?{4}start={5}'
                                '&end={6}'.format(self.ssl, self.host,
                                                  self.port, self.filter, self.urlbase,
                                                  start, end),
