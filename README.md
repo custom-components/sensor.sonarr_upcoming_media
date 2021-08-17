@@ -32,7 +32,7 @@ Read through these two resources before posting issues to GitHub or the forums.
 | days | 7 | no | How many days to look ahead for the upcoming sensor.
 | ssl | false | no | Whether or not to use SSL for Sonarr.
 | max | 5 | no | Max number of items in sensor.
-| filter-all | false | no | Show all series, not only monitored.
+| filterall | false | no | Show all series, not only monitored.
 </br>
 
 **Do not just copy examples, please use config options above to build your own!**
