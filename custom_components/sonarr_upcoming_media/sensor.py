@@ -25,7 +25,7 @@ _LOGGER = logging.getLogger(__name__)
 CONF_DAYS = 'days'
 CONF_URLBASE = 'urlbase'
 CONF_MAX = 'max'
-CONF_FILTER = 'filter-all'
+CONF_FILTER = 'filterall'
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_API_KEY): cv.string,
