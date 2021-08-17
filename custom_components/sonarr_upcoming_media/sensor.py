@@ -15,7 +15,7 @@ from datetime import date, datetime
 import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT, CONF_SSL
+from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT, CONF_SSL, CONF_FILTER
 from homeassistant.helpers.entity import Entity
 
 __version__ = '0.1.10'
@@ -34,6 +34,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_SSL, default=False): cv.boolean,
     vol.Optional(CONF_URLBASE, default=''): cv.string,
     vol.Optional(CONF_MAX, default=5): cv.string,
+    vol.Optional(CONF_FILTER, default=False): cv.boolean,
 })
 
 
@@ -57,6 +58,7 @@ class SonarrUpcomingMediaSensor(Entity):
         self.data = []
         self._tz = timezone(str(hass.config.time_zone))
         self.max_items = int(conf.get(CONF_MAX))
+        self.filter ='unmonitored=True' if conf.get(CONF_FILTER) else ''
 
     @property
     def name(self):
@@ -139,9 +141,9 @@ class SonarrUpcomingMediaSensor(Entity):
         start = get_date(self._tz)
         end = get_date(self._tz, self.days)
         try:
-            api = requests.get('http{0}://{1}:{2}/{3}api/calendar?unmonitored=true&start={4}'
-                               '&end={5}'.format(self.ssl, self.host,
-                                                 self.port, self.urlbase,
+            api = requests.get('http{0}://{1}:{2}/{3}api/calendar?unmonitored={4}&start={5}'
+                               '&end={6}'.format(self.ssl, self.host,
+                                                 self.port, self.filter, self.urlbase,
                                                  start, end),
                                headers={'X-Api-Key': self.apikey}, timeout=10)
         except OSError:
