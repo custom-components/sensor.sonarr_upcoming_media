@@ -109,9 +109,9 @@ class SonarrUpcomingMediaSensor(Entity):
             else:
                 card_item['studio'] = ''
             if ('ratings' in show['series'] and
-            show['series']['ratings']['value'] > 0):
+               show['series']['ratings']['value'] > 0):
                     card_item['rating'] = ('\N{BLACK STAR} ' +
-                                    str(show['series']['ratings']['value']))
+                                     str(show['series']['ratings']['value']))
             else:
                 card_item['rating'] = ''
             if 'genres' in show['series']:
@@ -132,8 +132,8 @@ class SonarrUpcomingMediaSensor(Entity):
             except:
                 pass
             series_title = show['series']['title']
-            series_slug = series_title.lower().replace(' ', '-')  # Slugify the series title
-            card_item['deep_link'] = f'http://{self.host}:{self.port}/series/{series_slug}?apikey={self.apikey}'
+            series_slug = series_title.lower().replace(' ', '-')
+            card_item['deep_link'] = f'http://{self.host}:{self.port}/series/{series_slug}'
             card_json.append(card_item)
         attributes['data'] = card_json
         return attributes
