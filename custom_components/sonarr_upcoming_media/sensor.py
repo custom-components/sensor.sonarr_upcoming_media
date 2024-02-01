@@ -121,16 +121,19 @@ class SonarrUpcomingMediaSensor(Entity):
             try:
                 for img in show['series']['images']:
                     if img['coverType'] == 'poster':
-                        card_item['poster'] = re.sub('.jpg', '_t.jpg', img['url'])
+                        card_item['poster'] = re.sub('.jpg', '_t.jpg', img['remoteUrl'])
             except:
                 continue
             try:
                 card_item['fanart'] = ''
                 for img in show['series']['images']:
                     if img['coverType'] == 'fanart':
-                        card_item['fanart'] = re.sub('.jpg', '_t.jpg', img['url'])
+                        card_item['fanart'] = re.sub('.jpg', '_t.jpg', img['remoteUrl'])
             except:
                 pass
+            series_title = show['series']['title']
+            series_slug = series_title.lower().replace(' ', '-')
+            card_item['deep_link'] = f'http://{self.host}:{self.port}/series/{series_slug}'
             card_json.append(card_item)
         attributes['data'] = card_json
         return attributes
@@ -139,8 +142,8 @@ class SonarrUpcomingMediaSensor(Entity):
         start = get_date(self._tz)
         end = get_date(self._tz, self.days)
         try:
-            api = requests.get('http{0}://{1}:{2}/{3}api/calendar?start={4}'
-                               '&end={5}'.format(self.ssl, self.host,
+            api = requests.get('http{0}://{1}:{2}/{3}api/v3/calendar?start={4}'
+                               '&end={5}&includeEpisodeImages=true&includeSeries=true'.format(self.ssl, self.host,
                                                  self.port, self.urlbase,
                                                  start, end),
                                headers={'X-Api-Key': self.apikey}, timeout=10)
