@@ -1,0 +1,5 @@
+{
+    "name": "Sonarr Upcoming Media",
+    "content_in_root": false,
+    "domains": ["sensor"]
+}
