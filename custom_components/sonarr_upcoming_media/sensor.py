@@ -133,7 +133,8 @@ class SonarrUpcomingMediaSensor(Entity):
                 pass
             series_title = show['series']['title']
             series_slug = series_title.lower().replace(' ', '-')
-            card_item['deep_link'] = f'http://{self.host}:{self.port}/series/{series_slug}'
+            protocol = 'https' if self.ssl else 'http'
+            card_item['deep_link'] = f'{protocol}://{self.host}:{self.port}/series/{series_slug}'
             card_json.append(card_item)
         attributes['data'] = card_json
         return attributes
