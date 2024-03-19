@@ -118,6 +118,7 @@ class SonarrUpcomingMediaSensor(Entity):
                 card_item['genres'] = ', '.join(show['series']['genres'])
             else:
                 card_item['genres'] = ''
+            card_item['summary'] = show.get('overview', '')
             try:
                 for img in show['series']['images']:
                     if img['coverType'] == 'poster':
