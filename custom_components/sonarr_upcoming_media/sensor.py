@@ -26,7 +26,7 @@ class SonarrUpcomingMediaSensor(CoordinatorEntity[SonarrDataCoordinator], Sensor
     def __init__(self, coordinator: SonarrDataCoordinator, config_entry: ConfigEntry):
         super().__init__(coordinator)
         self._coordinator = coordinator
-        self._name = f'{config_entry.data[CONF_NAME].capitalize()} Sonarr Upcoming Media'
+        self._name = f'{config_entry.data[CONF_NAME].capitalize() + " " if len(config_entry.data[CONF_NAME]) > 0 else ""}Sonarr Upcoming Media'
         self._api_key = config_entry.data[CONF_API_KEY]
 
     @property

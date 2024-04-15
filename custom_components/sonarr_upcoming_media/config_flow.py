@@ -27,7 +27,7 @@ def valid_max():
     return lambda x: type(x) == int and x > 0
 
 SONARR_SCHEMA = vol.Schema({
-    vol.Optional(CONF_NAME, default='Sonarr'): vol.All(str),
+    vol.Optional(CONF_NAME, default=''): vol.All(str),
     vol.Optional(CONF_HOST, default='localhost'): vol.All(str),
     vol.Optional(CONF_PORT, default=8989): vol.All(vol.Coerce(int), vol.Range(min=0)),
     vol.Optional(CONF_URLBASE, default=''): vol.All(str),
