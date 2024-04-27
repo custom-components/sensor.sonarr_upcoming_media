@@ -64,7 +64,7 @@ class SonarrConfigFlow(ConfigFlow, domain=DOMAIN):
             except SonarrCannotBeReached as err:
                 errors = {'base': 'cannot_be_reached'}
             else:
-                return self.async_create_entry(title=user_input[CONF_NAME], data=user_input)
+                return self.async_create_entry(title=user_input[CONF_NAME] if len(user_input[CONF_NAME]) > 0 else "Sonarr Upcoming Media", data=user_input)
 
         schema = self.add_suggested_values_to_schema(SONARR_SCHEMA, user_input)
         return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
