@@ -33,7 +33,7 @@ SONARR_SCHEMA = vol.Schema({
     vol.Optional(CONF_URLBASE, default=''): vol.All(str),
     vol.Required(CONF_API_KEY): vol.All(str),
     vol.Optional(CONF_SSL, default=False): vol.All(bool),
-    vol.Required(CONF_DAYS, default=7): vol.All(vol.Coerce(int), vol.Range(min=1, max=31)),
+    vol.Required(CONF_DAYS, default=7): vol.All(vol.Coerce(int), vol.Range(min=1)),
     vol.Required(CONF_MAX, default=5): vol.All(vol.Coerce(int), vol.Range(min=0)),
 })
 
