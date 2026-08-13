@@ -38,34 +38,34 @@ class SonarrApi():
         tz = timezone(str(self._hass.config.time_zone))
         start = get_date(tz)
         end = get_date(tz, self._days)
-        address = 'http{0}://{1}:{2}/{3}api/v3/calendar?start={4}&end={5}&includeEpisodeImages=true&includeSeries=true'.format(
-                    's' if self._ssl else '', 
-                    self._host,
-                    self._port,
-                    "{}/".format(self._url_base.strip('/')) if self._url_base else self._url_base,
-                    start,
-                    end
-                    )
+        url_prefix = "{}/".format(self._url_base.strip('/')) if self._url_base else self._url_base
+        protocol = 's' if self._ssl else ''
+        address_calendar = f'http{protocol}://{self._host}:{self._port}/{url_prefix}api/v3/calendar?start={start}&end={end}&includeEpisodeImages=true&includeSeries=true'
+        address_wanted = f'http{protocol}://{self._host}:{self._port}/{url_prefix}api/v3/wanted/missing?page=1&pageSize={self._max}&sortKey=airDateUtc&sortDir=descending&includeSeries=true&includeImages=true'
+
         try:
-            api = requests.get(address, headers={'X-Api-Key': self._api}, timeout=10)
+            api_calendar = requests.get(address_calendar, headers={'X-Api-Key': self._api}, timeout=10)
+            api_wanted = requests.get(address_wanted, headers={'X-Api-Key': self._api}, timeout=10)
         except OSError:
             raise SonarrCannotBeReached
 
-        if api.status_code == 200:
+        if api_calendar.status_code == 200 and api_wanted.status_code == 200:
+            upcoming_raw = api_calendar.json()
             if self._days == 1:
-                return {
-                    'online': True,
-                    'data': parse_data(list(
-                                        filter(
-                                            lambda x: x['airDate'][:-10] == str(start),
-                                            api.json()))[:self._max], tz, self._host, self._port, self._ssl, self._url_base)
-                }
-                            
+                upcoming_raw = list(filter(lambda x: x.get('airDate', '')[:-10] == str(start), upcoming_raw))
+            upcoming_data = parse_data(upcoming_raw[:self._max], tz, self._host, self._port, self._ssl, self._url_base)
+
+            wanted_json = api_wanted.json()
+            wanted_records = wanted_json.get('records', wanted_json) if isinstance(wanted_json, dict) else wanted_json
+            wanted_data = parse_data(wanted_records[:self._max], tz, self._host, self._port, self._ssl, self._url_base)
+
             return {
                 'online': True,
-                'data': parse_data(api.json()[:self._max], tz, self._host, self._port, self._ssl, self._url_base)
+                'upcoming': upcoming_data,
+                'wanted': wanted_data,
+                'data': upcoming_data,
             }
-        
+
         raise SonarrCannotBeReached
 
 class FailedToLogin(Exception):

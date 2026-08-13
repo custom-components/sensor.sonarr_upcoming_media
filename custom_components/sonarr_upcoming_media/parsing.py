@@ -38,7 +38,7 @@ def parse_data(data, tz, host, port, ssl, url_base=None):
         if 'series' not in show:
             continue
         card_item['airdate'] = show['airDateUtc']
-        if days_until(show['airDateUtc'], tz) <= 7:
+        if 0 <= days_until(show['airDateUtc'], tz) <= 7:
             card_item['release'] = '$day, $time'
         else:
             card_item['release'] = '$day, $date $time'
