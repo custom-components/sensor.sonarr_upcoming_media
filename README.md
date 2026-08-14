@@ -39,10 +39,15 @@ If the above My button doesn’t work, you can also perform the following steps 
 
 ### Sample for ui-lovelace.yaml:
 
+```yaml
     - type: custom:upcoming-media-card
       entity: sensor.sonarr_upcoming_media
       title: Upcoming TV
-      
+
+    - type: custom:upcoming-media-card
+      entity: sensor.sonarr_wanted_media
+      title: Wanted TV
+```
       
 ### Card Content Defaults:
 
