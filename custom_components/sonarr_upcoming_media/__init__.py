@@ -21,7 +21,6 @@ from .sonarr_api import (
     FailedToLogin,
     SonarrCannotBeReached
 )
-from .parsing import TMDBApiNotResponding
 
 PLATFORMS = [
     Platform.SENSOR
@@ -44,8 +43,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         raise ConfigEntryNotReady("Failed to Log-in") from err
     except SonarrCannotBeReached as err:
         raise ConfigEntryNotReady("Sonarr cannot be reached") from err
-    except TMDBApiNotResponding as err:
-        raise ConfigEntryNotReady("TMDB API is not responding") from err
     coordinator = SonarrDataCoordinator(hass, client)
 
     await coordinator.async_config_entry_first_refresh()
